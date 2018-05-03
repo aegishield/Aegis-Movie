@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -67,26 +68,27 @@ public class AdminController {
 		}
 		
 		@RequestMapping(value="/admin/register", method = RequestMethod.POST)
-		public String submitRegistration(Model model,@ModelAttribute("user") AppUser user,BindingResult bindingResult,@ModelAttribute("role") Role role, HttpServletRequest request){
+		public String submitRegistration(Model model,@Valid @ModelAttribute("user") AppUser user,BindingResult bindingResult,@ModelAttribute("role") Role role, HttpServletRequest request){
 			
 			AppUser userNameExists = appUserRepository.findByUserName(user.getUserName());
 			
 			if(userNameExists == null) {
 				model.addAttribute("userNotFound", "Oops!  Username not found in database!.");
 				bindingResult.reject("userName");
-			}
-			role.setUserId(userNameExists.getUserId());
-
-			List<Role> roleExists = roleRepository.findAllByUserId(userNameExists.getUserId());
-			for (Role role2 : roleExists) {
-				Long roleUser = role2.getRoleId();
-				Long userId = role2.getUserId();
-				if(roleUser == role.getRoleId() && userId == role.getUserId() ) {
-					model.addAttribute("roleExists","Oops!  Username already assigned with that role!.");
-					bindingResult.reject("role");
+			} else {
+			
+				role.setUserId(userNameExists.getUserId());
+				
+				List<Role> roleExists = roleRepository.findAllByUserId(userNameExists.getUserId());
+				for (Role role2 : roleExists) {
+					Long roleUser = role2.getRoleId();
+					Long userId = role2.getUserId();
+					if(roleUser == role.getRoleId() && userId == role.getUserId() ) {
+						model.addAttribute("roleExists","Oops!  Username already assigned with that role!.");
+						bindingResult.reject("role");
+					}
 				}
 			}
-			
 			if (bindingResult.hasErrors()) { 
 				return "adminRegister";	
 			} else {
