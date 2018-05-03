@@ -1,0 +1,16 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	    <title>Confirmation</title>
+	    <link rel="stylesheet" type="text/css"
+		href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+	
+		<link rel="stylesheet" th:href="@{/css/main.css}"
+		href="../../css/main.css" />
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	    <h2 th:if="${messageFailed}" th:text=${messageFailed}></h2>
+		<h2 th:if="${messageSuccess}" th:text=${messageSuccess}></h2>	
+</body>
+</html>

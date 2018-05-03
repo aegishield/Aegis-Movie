@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title th:utext="${title}"></title>
+    <link rel="stylesheet" type="text/css"
+			href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+		
+		<link rel="stylesheet" th:href="@{/css/main.css}"
+			href="../../css/main.css" />
+   </head>
+   <body>
+     
+     <div>
+   		
+   <nav class="navbar navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Aegis Movie</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a th:href="@{/}">Home</a></li>
+					<li><a th:if="${#request.userPrincipal != null}" th:href="@{/userInfo}">User Info</a></li>
+					<li><a th:if="${admin == 'ADMIN'}"th:href="@{/admin}">Admin</a>
+					<li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+  
+</div>
+
+<script type="text/javascript"
+		src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     
+    <h2>Admin Page</h2>
+    <h3>Welcome :
+       <span th:utext="${#request.userPrincipal.name}"></span>
+    </h3>
+     
+    <br/><br/>
+
+	<p><a th:href="@{admin/allMovie}">List movie</a></p>
+	<p><a th:href="@{admin/register}">Register admin / employee</a></p>
+    <script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+ 
+    
+</body>
+    
+</html>
