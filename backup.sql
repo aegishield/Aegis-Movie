@@ -97,6 +97,39 @@ ALTER SEQUENCE public.app_user_user_id_seq OWNED BY public.app_user.user_id;
 
 
 --
+-- Name: employee; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.employee (
+    emp_id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    nama text NOT NULL,
+    alamat text NOT NULL,
+    gaji integer NOT NULL,
+    bonus integer NOT NULL
+);
+
+
+--
+-- Name: employee_emp_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.employee_emp_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: employee_emp_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.employee_emp_id_seq OWNED BY public.employee.emp_id;
+
+
+--
 -- Name: movie; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -184,6 +217,13 @@ ALTER TABLE ONLY public.app_user ALTER COLUMN user_id SET DEFAULT nextval('publi
 
 
 --
+-- Name: employee emp_id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee ALTER COLUMN emp_id SET DEFAULT nextval('public.employee_emp_id_seq'::regclass);
+
+
+--
 -- Name: movie movieid; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -221,6 +261,14 @@ nila	$2a$10$EkSf.KWyT7KgloHrh.hEW.npeFDnA10UZidYJj9x5ITS7mAeoMeC.	t	artanila15@g
 
 
 --
+-- Data for Name: employee; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.employee (emp_id, user_id, nama, alamat, gaji, bonus) FROM stdin;
+\.
+
+
+--
 -- Data for Name: movie; Type: TABLE DATA; Schema: public; Owner: -
 --
 
@@ -243,6 +291,7 @@ COPY public.user_role (user_id, role_id, id) FROM stdin;
 40	2	23
 40	1	24
 35	1	25
+38	3	26
 \.
 
 
@@ -261,6 +310,13 @@ SELECT pg_catalog.setval('public.app_user_user_id_seq', 40, true);
 
 
 --
+-- Name: employee_emp_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public.employee_emp_id_seq', 1, false);
+
+
+--
 -- Name: movie_movieid_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
@@ -271,7 +327,7 @@ SELECT pg_catalog.setval('public.movie_movieid_seq', 1, true);
 -- Name: user_role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.user_role_id_seq', 25, true);
+SELECT pg_catalog.setval('public.user_role_id_seq', 26, true);
 
 
 --
@@ -287,6 +343,14 @@ SELECT pg_catalog.setval('public.your_seq', 1, false);
 
 ALTER TABLE ONLY public.app_user
     ADD CONSTRAINT app_user_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: employee employee_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT employee_pkey PRIMARY KEY (emp_id);
 
 
 --
@@ -332,6 +396,14 @@ CREATE INDEX idx_16407_user_role_fk1 ON public.user_role USING btree (user_id);
 --
 
 CREATE INDEX idx_16407_user_role_fk2 ON public.user_role USING btree (role_id);
+
+
+--
+-- Name: employee fk; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.employee
+    ADD CONSTRAINT fk FOREIGN KEY (user_id) REFERENCES public.app_user(user_id);
 
 
 --

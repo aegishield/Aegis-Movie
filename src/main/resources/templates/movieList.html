@@ -11,11 +11,14 @@
 </head>
 <body>
 <h1>Movie</h1>
+<h2> <a th:href = "@{/admin/movie/add}">ADD New Movie</a></h2>
+
     <ul>
     <th:block th:each="movie : ${movies}">
     	<li th:text="${movie.movieName}"></li>
 		<li><img th:src="@{${movie.posterLink}}" alt="My Image"></li>
 		<li><a th:href="@{${movie.imdbLink}}" target="_blank">Description</a></li>
+		<li th:text="${movie.releaseDate}"></li>
     </ul>
    	</th:block>
 </body>

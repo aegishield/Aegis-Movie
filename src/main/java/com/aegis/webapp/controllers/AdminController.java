@@ -1,6 +1,7 @@
 package com.aegis.webapp.controllers;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,12 +53,32 @@ public class AdminController {
 	        return "adminPage";
 	    }
 		
-		@RequestMapping(value = "admin/allMovie", method = RequestMethod.GET)
+		@RequestMapping(value = "admin/movie", method = RequestMethod.GET)
 	    public String listAllMovie(Model model) {
 	    	
 	    	List<Movie> movies = movieRepository.findAll();
 	    	model.addAttribute("movies",movies);
 	    	return "movieList";
+	    }
+		
+		@RequestMapping(value = "admin/movie/add", method = RequestMethod.GET)
+	    public String addMovie(Model model,Movie movie) {
+	    	
+	    	model.addAttribute("movie",movie);
+	    	return "movieAdd";
+	    }
+		
+		@RequestMapping(value = "admin/movie/add", method = RequestMethod.POST)
+	    public String saveMovie(Model model,@ModelAttribute("movie") Movie movie,BindingResult bindingResult,HttpServletRequest request) {
+	    	Movie movieExists = movieRepository.findByMovieName(movie.getMovieName());
+	    	if(movieExists != null) {
+				model.addAttribute("movieFound", "Oops! Movie already in database!");
+				bindingResult.reject("movieName");
+			} else {
+				model.addAttribute("messageSuccess", "Movie sucessfully added!");
+				movieRepository.save(movie);
+			}
+	    	return "movieAdd";
 	    }
 		
 		@RequestMapping(value="/admin/register", method = RequestMethod.GET)
@@ -68,7 +89,7 @@ public class AdminController {
 		}
 		
 		@RequestMapping(value="/admin/register", method = RequestMethod.POST)
-		public String submitRegistration(Model model,@Valid @ModelAttribute("user") AppUser user,BindingResult bindingResult,@ModelAttribute("role") Role role, HttpServletRequest request){
+		public String submitRegistration(Model model,@ModelAttribute("user") AppUser user,BindingResult bindingResult,@ModelAttribute("role") Role role, HttpServletRequest request){
 			
 			AppUser userNameExists = appUserRepository.findByUserName(user.getUserName());
 			
@@ -97,5 +118,7 @@ public class AdminController {
 			}
 			return "adminRegister";
 		}
+		
+		
 		
 }

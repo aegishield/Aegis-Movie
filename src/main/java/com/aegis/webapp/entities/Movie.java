@@ -1,17 +1,24 @@
 package com.aegis.webapp.entities;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name ="movie")
 public class Movie {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "movieid")
 	private Long movieId;
 	
@@ -24,16 +31,26 @@ public class Movie {
 	@Column(name = "posterlink")
     private String posterLink;
     
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@Column(name = "release_date",columnDefinition="DATE")
+	private Date releaseDate;
+	
+	@Transient
+	private String stringDate;
+	
     public Movie() {
     	 
     }
     
-    public Movie(Long movieId, String movieName, String imdbLink, String posterLink) {
+    public Movie(Long movieId, String movieName, String imdbLink, String posterLink,Date releaseDate,String stringDate) {
 		super();
 		this.movieId = movieId;
 		this.movieName = movieName;
 		this.imdbLink = imdbLink;
 		this.posterLink = posterLink;
+		this.releaseDate = releaseDate;
+		this.stringDate = stringDate;
 	}
 
     
@@ -83,8 +100,24 @@ public class Movie {
 	public void setPosterLink(String posterLink) {
 		this.posterLink = posterLink;
 	}
+	
 
+	public Date getReleaseDate() {
+		return releaseDate;
+	}
 
+	public void setReleaseDate(Date releaseDate) {
+		this.releaseDate = releaseDate;
+	}
+
+	
+	public String getStringDate() {
+		return stringDate;
+	}
+
+	public void setStringDate(String stringDate) {
+		this.stringDate = stringDate;
+	}
 
 	@Override
     public String toString() {

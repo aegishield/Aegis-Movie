@@ -10,4 +10,5 @@ import com.aegis.webapp.entities.Movie;
 @Repository
 public interface MovieRepository extends JpaRepository<Movie,Long>{
 	List<Movie> findAll();
+	Movie findByMovieName(String movieName);
 }
