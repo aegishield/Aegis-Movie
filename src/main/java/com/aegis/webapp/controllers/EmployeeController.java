@@ -2,6 +2,8 @@ package com.aegis.webapp.controllers;
 
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -39,7 +41,7 @@ public class EmployeeController {
         String employee = WebUtils.isEmployee(loginedUser);
         model.addAttribute("employee", employee);
          
-        return "empSetProfilePage";
+        return "employeePage";
     }
 	
 	@RequestMapping(value = "employee/addBalance", method = RequestMethod.GET)
@@ -67,12 +69,32 @@ public class EmployeeController {
     }
 	
 	@RequestMapping(value = "employee/setProfile", method = RequestMethod.GET)
-	public String showSetUserProfilePage(Model model,@ModelAttribute("emp") Employee emp,Principal principal) {
+	public String showSetUserProfilePage(Model model,Principal principal) {
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
         AppUser user = appUserRepository.findByUserName(loginedUser.getUsername());
-        emp.setUserId(user.getUserId());
-		model.addAttribute("emp",emp);
-        return "addBalancePage";
+        Employee empExists = employeeRepository.findByUserId(user.getUserId());
+        if(empExists == null) {
+        	Employee emp = new Employee();
+    		model.addAttribute("employee",emp);
+        } else {
+        	model.addAttribute("employee",empExists);
+        }
+        
+        return "setEmpProfilePage";
+    }
+	
+	@RequestMapping(value = "employee/setProfile", method = RequestMethod.POST)
+	public String saveUserProfile(Model model,@ModelAttribute("employee") Employee emp,BindingResult bindingResult,HttpServletRequest request,Principal principal) {
+		User loginedUser = (User) ((Authentication) principal).getPrincipal();
+        AppUser user = appUserRepository.findByUserName(loginedUser.getUsername());
+		model.addAttribute("messageSuccess","Your profile has been set!");
+		if(emp.getUserId() == null) {
+			emp.setGaji(0);
+			emp.setBonus(0);
+        	emp.setUserId(user.getUserId());
+		}
+		employeeRepository.save(emp);
+        return "setEmpProfilePage";
     }
 	
 	

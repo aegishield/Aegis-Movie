@@ -25,7 +25,9 @@ public class WebController {
     	if (principal != null) {
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
         String admin = WebUtils.isAdmin(loginedUser);
+        String employee = WebUtils.isEmployee(loginedUser);
         model.addAttribute("admin", admin);
+        model.addAttribute("employee",employee);
     	}
         return "welcomePage";
     }

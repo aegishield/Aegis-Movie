@@ -27,6 +27,7 @@
 					<li><a th:href="@{/}">Home</a></li>
 					<li><a th:if="${#request.userPrincipal != null}" th:href="@{/userInfo}">User Info</a></li>
 					<li><a th:if="${admin == 'ADMIN'}"th:href="@{/admin}">Admin</a>
+					<li><a th:if="${employee == 'EMPLOYEE'}"th:href="@{/employee}">Employee</a>
 					<li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a></li>
 				</ul>
 			</div>
