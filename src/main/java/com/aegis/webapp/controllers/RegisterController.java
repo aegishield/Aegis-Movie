@@ -1,5 +1,7 @@
 package com.aegis.webapp.controllers;
 
+import java.security.Principal;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +46,11 @@ public class RegisterController {
 
 
 	@RequestMapping(value="/register", method = RequestMethod.GET)
-	public ModelAndView showRegistrationPage(ModelAndView modelAndView, AppUser user){
+	public ModelAndView showRegistrationPage(ModelAndView modelAndView, AppUser user,Principal principal){
+		if (principal != null) {
+			modelAndView.setViewName("welcomePage");
+    		return modelAndView;
+    	}
 		modelAndView.addObject("user", user);
 		modelAndView.setViewName("register");
 		return modelAndView;
@@ -77,6 +83,7 @@ public class RegisterController {
 	    user.setBalance(0);
 	    user.setConfirmationToken(UUID.randomUUID().toString());
 	    user.setEncrytedPassword(bCryptPasswordEncoder.encode(user.getEncrytedPassword()));
+	    user.setDateCreated(new Date());
 	        
 	    appUserRepository.save(user);
 			

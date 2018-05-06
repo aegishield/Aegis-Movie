@@ -2,6 +2,8 @@ package com.aegis.webapp.entities;
 
 
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +25,7 @@ public class AppUser {
 	@Column(name = "user_name")
 	@NotEmpty(message = "Provide user name")
     private String userName;
+	
     private String encrytedPassword;
     
     @Column(name = "email", nullable = false, unique = true)
@@ -39,12 +42,16 @@ public class AppUser {
 	@Column(name = "balance")
 	private Integer balance;
 	
+	@Column(name = "datecreated")
+	private Date dateCreated;
+	
+	
     public AppUser() {
  
     }
     
 
-	public AppUser(Long userId, String userName, String encrytedPassword, String email, String confirmationToken,boolean enabled,Integer balance) {
+	public AppUser(Long userId, String userName, String encrytedPassword, String email, String confirmationToken,boolean enabled,Integer balance,Date datecreated, Date dateCreated) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
@@ -53,6 +60,7 @@ public class AppUser {
 		this.confirmationToken = confirmationToken;
 		this.enabled = enabled;
 		this.balance = balance;
+		this.dateCreated = dateCreated;
 	}
 
 
@@ -116,6 +124,17 @@ public class AppUser {
 
 	public void setBalance(Integer balance) {
 		this.balance = balance;
+	}
+	
+	
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 
 

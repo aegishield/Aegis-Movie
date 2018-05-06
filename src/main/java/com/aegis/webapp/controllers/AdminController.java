@@ -1,11 +1,10 @@
 package com.aegis.webapp.controllers;
 
 import java.security.Principal;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -48,6 +48,9 @@ public class AdminController {
 	        User loginedUser = (User) ((Authentication) principal).getPrincipal();
 	 
 	        String admin = WebUtils.isAdmin(loginedUser);
+	        if(admin.equals("USER")) {
+	        	return "redirect:/";
+	        }
 	        model.addAttribute("admin", admin);
 	         
 	        return "adminPage";
@@ -62,7 +65,7 @@ public class AdminController {
 	    }
 		
 		@RequestMapping(value = "admin/movie/add", method = RequestMethod.GET)
-	    public String addMovie(Model model,Movie movie) {
+	    public String showAddMoviePage(Model model,Movie movie) {
 	    	
 	    	model.addAttribute("movie",movie);
 	    	return "movieAdd";
@@ -81,12 +84,30 @@ public class AdminController {
 	    	return "movieAdd";
 	    }
 		
+		@RequestMapping(value="/admin/movie/edit/{id}", method = RequestMethod.GET)
+		public String showEditMoviePage(Model model,Movie movie,@PathVariable("id") Long id){
+			movie = movieRepository.findByMovieId(id);
+			if (movie == null) {
+				return "errorPage";
+			}
+			model.addAttribute("movie",movie);
+			return "movieEdit";
+		}
+		
+		@RequestMapping(value="/admin/movie/edit/{id}", method = RequestMethod.POST)
+		public String postEditMovie(Model model,Movie movie,@PathVariable("id") Long id){
+				model.addAttribute("messageSuccess", "Edit Successfull!");
+				movieRepository.save(movie);
+				return "movieEdit";
+		}
+		
 		@RequestMapping(value="/admin/register", method = RequestMethod.GET)
 		public String showRegistrationPage(Model model, AppUser user,Role role){
 			model.addAttribute("user", user);
 			model.addAttribute("role", role);
 			return "adminRegister";
 		}
+		
 		
 		@RequestMapping(value="/admin/register", method = RequestMethod.POST)
 		public String submitRegistration(Model model,@ModelAttribute("user") AppUser user,BindingResult bindingResult,@ModelAttribute("role") Role role, HttpServletRequest request){
@@ -118,7 +139,4 @@ public class AdminController {
 			}
 			return "adminRegister";
 		}
-		
-		
-		
 }

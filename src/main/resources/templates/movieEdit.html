@@ -18,7 +18,7 @@
 		<link rel="stylesheet" th:href="@{/css/main.css}"
 			href="../../css/main.css" />
 
-<title>Add Movie </title>
+<title>Edit Movie </title>
 
 <!-- Bootstrap core CSS -->
 <link
@@ -37,9 +37,9 @@
       
       <hr />
 
-      <h4>Add new Movie</h4>
+      <h4>Edit Movie</h4>
 
-      <form autocomplete="off" action="#" th:action="@{/admin/movie/add}"
+      <form autocomplete="off" action="#" th:action="@{'/admin/movie/edit/' + ${movie.movieId}}"
         method="post" class="m-t" role="form"
         data-toggle="validator">
 
@@ -47,11 +47,15 @@
         <div th:if="${messageSuccess}" class="alert alert-success"
           role="alert" th:text=${messageSuccess}></div>
 
-        <div th:if="${movieFound}"
+        <div th:if="${error}"
           class="alert alert-danger" role="alert"
-          th:text="${movieFound}"></div>
+          th:text="${error}"></div>
 
-       
+       	 
+          <input type="hidden" th:field="${movie.movieId}"
+            placeholder="Movie name" class="form-control" />
+          
+        
         <div class="form-group input-group has-feedback">
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-save"></span>

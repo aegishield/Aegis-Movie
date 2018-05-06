@@ -7,6 +7,7 @@
 		
 		<link rel="stylesheet" th:href="@{/css/main.css}"
 			href="../../css/main.css" />
+			
 			<title>Movie management screen</title>
 </head>
 <body>
@@ -19,6 +20,7 @@
 		<li><img th:src="@{${movie.posterLink}}" alt="My Image"></li>
 		<li><a th:href="@{${movie.imdbLink}}" target="_blank">Description</a></li>
 		<li th:text="${movie.releaseDate}"></li>
+		<li><a th:href="@{'movie/edit/' + ${movie.movieId}}">edit</a></li>
     </ul>
    	</th:block>
 </body>

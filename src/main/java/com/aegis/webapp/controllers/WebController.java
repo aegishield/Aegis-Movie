@@ -38,6 +38,8 @@ public class WebController {
     	}
         return "loginPage";
     }
+    
+    
  
     @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
     public String logoutSuccessfulPage(Model model) {
