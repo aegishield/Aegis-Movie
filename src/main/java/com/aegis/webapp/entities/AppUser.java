@@ -64,38 +64,55 @@ public class AppUser {
 	}
 
 
+	
+
 	public Long getUserId() {
-        return userId;
-    }
- 
+		return userId;
+	}
+
 
 	public void setUserId(Long userId) {
-        this.userId = userId;
-    }
- 
-    public String getUserName() {
-        return userName;
-    }
- 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
- 
-    public String getEncrytedPassword() {
-        return encrytedPassword;
-    }
- 
-    public void setEncrytedPassword(String encrytedPassword) {
-        this.encrytedPassword = encrytedPassword;
-    }
- 
+		this.userId = userId;
+	}
+
+
+	public String getUserName() {
+		return userName;
+	}
+
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+
+	public String getEncrytedPassword() {
+		return encrytedPassword;
+	}
+
+
+	public void setEncrytedPassword(String encrytedPassword) {
+		this.encrytedPassword = encrytedPassword;
+	}
+
 
 	public String getEmail() {
 		return email;
 	}
 
+
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 
@@ -107,16 +124,8 @@ public class AppUser {
 	public void setConfirmationToken(String confirmationToken) {
 		this.confirmationToken = confirmationToken;
 	}
-	
-	public boolean isEnabled() {
-			return enabled;
-	}
 
-	public void setEnabled(boolean enabled) {
-			this.enabled = enabled;
-	}
-	
-	
+
 	public Integer getBalance() {
 		return balance;
 	}
@@ -125,8 +134,7 @@ public class AppUser {
 	public void setBalance(Integer balance) {
 		this.balance = balance;
 	}
-	
-	
+
 
 	public Date getDateCreated() {
 		return dateCreated;

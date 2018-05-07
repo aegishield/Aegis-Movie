@@ -32,7 +32,8 @@ public class EmpScheduleController {
 	
 	@RequestMapping(value = "/admin/empSchedule", method = RequestMethod.GET)
 	public String schedulePage(Model model, @RequestParam(value = "month",required = false) Integer month,@RequestParam(value = "year",required = false) Integer year,EmpSchedule schedule) {
-    	
+    	model.addAttribute("month",month);
+    	model.addAttribute("year",year);
     	model.addAttribute("schedule",schedule);
         if(month == null && year == null) {
             return "empSchedule";
@@ -44,6 +45,7 @@ public class EmpScheduleController {
 			}
         	List<DailyEmpSchedule> dSchedules = dailyEmpScheduleRepository.findByScheduleIdIn(ids);
         	model.addAttribute("dSchedules",dSchedules);
+        	model.addAttribute("schedules",schedules);
         } else if(month!= null) {
         	List<EmpSchedule> schedules = empScheduleRepository.findAllByMonth(month);
         	List<Long> ids = new ArrayList<Long>();
@@ -52,6 +54,7 @@ public class EmpScheduleController {
 			}
         	List<DailyEmpSchedule> dSchedules = dailyEmpScheduleRepository.findByScheduleIdIn(ids);
         	model.addAttribute("dSchedules",dSchedules);
+        	model.addAttribute("schedules",schedules);
         } else if(year!= null) {
         	List<EmpSchedule> schedules = empScheduleRepository.findAllByYear(year);
         	List<Long> ids = new ArrayList<Long>();
@@ -60,6 +63,7 @@ public class EmpScheduleController {
 			}
         	List<DailyEmpSchedule> dSchedules = dailyEmpScheduleRepository.findByScheduleIdIn(ids);
         	model.addAttribute("dSchedules",dSchedules);
+        	model.addAttribute("schedules",schedules);
         }
          
         return "empSchedule";

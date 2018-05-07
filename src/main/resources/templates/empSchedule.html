@@ -33,7 +33,7 @@
       
       <hr />
 
-      <h4>Add Balance</h4>
+      <h4>See Emp Schedule</h4>
 
       <form autocomplete="off" action="#" th:action="@{/admin/empSchedule(month=${schedule.month},year=${schedule.year})}" 
         method="get" class="m-t" role="form"
@@ -58,9 +58,8 @@
 		
 			<select th:field="${schedule.year}">
                      <option value=""> -- </option>
-                     <option value="1"> 1 </option>
-                     <option value="2"> 2 </option>
-                     <option value="3"> 3 </option>
+                     <option value="2017"> 2017 </option>
+                     <option value="2018"> 2018 </option>
           </select>
           <span class="glyphicon form-control-feedback"
             aria-hidden="true"></span> 
@@ -70,16 +69,27 @@
 
       </form>
        <p class="m-t"></p>
+    	 <th:block th:each="schedule: ${schedules}">
        
-       
-    	<th:block th:each="dSchedule: ${dSchedules}">
-    	<h1 th:text="${dSchedule.dailyScheduleId}"></h1>
-    	
-   		</th:block>
+       	<table border="1">
+    	<tr>
+               <td th:text="${schedule.month}"></td>
+               <td th:text="${schedule.year}"></td>
+               <td> <a th:if="${month == null or year ==null}" th:href="@{/admin/empSchedule(month=${schedule.month},year=${schedule.year})}" th:text="Detail"></a></td>
+        
+        </tr>
+      	</table>
+      	</th:block>
+      	
+      	<th:block th:if="${month != null and year !=null}"th:each="dSchedule: ${dSchedules}">
+     		<li>
+              <ul th:text="${dSchedule.day}"></ul>
+              </li>
+      	</th:block>
       	
     </div>
   </div>
-
+	
 
   <!-- jQuery-->
   <script
