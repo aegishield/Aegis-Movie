@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="" />
+<meta name="author" content="" />
+<link rel="icon" href="favicon.ico" />
+
+<link rel="stylesheet" type="text/css"
+			href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+		
+		<link rel="stylesheet" th:href="@{/css/main.css}"
+			href="../../css/main.css" />
+
+<title>Booking</title>
+
+<!-- Bootstrap core CSS -->
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+  crossorigin="anonymous" />
+
+	<link th:href="@{css/style.css}" rel="stylesheet" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	
+	<script type="text/javascript">
+		function handleSelect(elm)
+		{
+		window.location.href = window.location.href + "&branch="+ elm.value;
+		}
+	
+	</script>
+	
+</head>
+
+<body class="gray-bg">
+
+  <div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+      
+<div th:if="${error}"
+          class="alert alert-danger" role="alert"
+          th:text="${error}"></div>
+          <div th:if="${success}" class="alert alert-success"
+          role="alert" th:text=${success}></div>
+          
+      <h4>Booking</h4>
+      
+		
+      <form autocomplete="off" action="#" th:action="@{/booking(movie=${movieId})}"
+        method="post" class="m-t" role="form"
+        data-toggle="validator">
+
+
+        <h4>Movie : </h4>
+        <span th:if="${movieId == null}"><a th:href="@{/booking/movie}">Select Movie</a></span>
+        <h4 th:if ="${movieId != null}" th:text = "${movie.movieName}"></h4>
+        <h4>Location :</h4>
+        <span th:if="${movieId == null}" >Please Select Movie First</span>
+        
+        <th:block th:if="${movieId != null}">
+        <th:block th:if="${branchId == null}">
+        <select onchange="javascript:handleSelect(this)">
+                     <option value="">Select</option>
+                     <option th:each="b : ${branches}"
+                        th:value="${b.branchId}"
+                        th:text="${b.address}"> </option>
+        </select>
+        </th:block>
+        </th:block>
+        
+        <th:block th:if ="${branchId != null}" >
+        <h4 th:text = "${branch.address}"></h4>
+        <a th:href="@{/booking(movie=${movieId})}">Change Location</a>	  
+        </th:block>
+        
+        <th:block th:if="${branchId != null}">
+        <h5>Harga room :</h5>
+                <h6>Standard : 20000</h6>
+                <h6>Regular : 50000</h6>
+                <h6>Premium : 100000</h6>
+        
+        <span>Select room : </span>
+        <select th:field="${booking.roomId}">
+                     <option value=""> -- </option>
+                     <option th:each="r : ${rooms}"
+                        th:value="${r.roomId}"
+                        th:text="${r.type}"> </option>
+        </select>
+        </th:block>	   
+        <h4> Select Date : </h4>     
+             
+        <div class="form-group input-group has-feedback">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-save"></span>
+          </span>
+          <input type="date" th:field="${booking.bookingDate}"
+            placeholder="Booking Date" class="form-control" />
+          <span class="glyphicon form-control-feedback"
+            aria-hidden="true"></span>
+        </div>
+		
+       
+		 
+		 <h4> Select Hour : </h4> 
+		 <select th:field="${booking.hourId}">
+                     <option value=""> -- </option>
+                     <option th:each="h : ${hours}"
+                        th:value="${h.hourId}"
+                        th:text="${h.startHour + ' - ' +h.endHour}"> </option>
+        </select>    
+		<h1></h1>
+		 <button type="submit"
+          class="btn btn-primary block full-width m-b">Book</button>
+          
+      </form>
+       <p class="m-t">
+      
+      </p>
+      
+     
+    </div>
+  </div>
+
+
+  <!-- jQuery-->
+  <script
+    src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+  <!-- Bootstrap -->
+  <script
+    src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+
+  <!-- Bootstrap Validator plugin -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
+
+ 
+</body>
+
+</html>

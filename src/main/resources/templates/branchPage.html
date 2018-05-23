@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" type="text/css"
+			href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+		
+		<link rel="stylesheet" th:href="@{/css/main.css}"
+			href="../../css/main.css" />
+			
+			<title>Movie management screen</title>
+</head>
+<body>
+<h1>Branch</h1>
+<h2> <a th:href = "@{/admin/branch/add}">ADD New Branch</a></h2>
+
+    <ul>
+    <th:block th:each="branch : ${branches}">
+    	<li th:text="${branch.branchId}"></li>
+		<li th:text="${branch.address}"></li>
+		<li th:text="${branch.status}"></li>
+		<li th:if="${branch.status == true}"><a th:href="@{/admin/branch(true=${branch.branchId})}">Disable</a></li>
+		<li th:if="${branch.status == false}"><a th:href="@{/admin/branch(true=${branch.branchId})}">Enable</a></li>
+		<li><a th:href="@{/admin/branch(id=${branch.branchId})}" th:text = "Detail" ></a></li>
+    </ul>
+   	</th:block>
+   	
+   	<th:block th:if = "${rooms != null}">
+   	<h1>Room Detail :</h1>
+   	<a th:href="@{/admin/branch/room(id=${id})}">Add new Room</a>
+   	<ul>
+    <th:block th:if = "${rooms}" th:each="room : ${rooms}">
+    	<li th:text="${room.roomId}"></li>
+		<li th:text="${room.capacity}"></li>
+		<li th:text="${room.type}"></li>
+		<h1></h1>
+    </ul>
+   	</th:block>
+   	
+</body>
+</html>

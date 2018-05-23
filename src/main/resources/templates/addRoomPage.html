@@ -4,21 +4,18 @@
   xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="utf-8" />
+  
+<meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <meta name="description" content="" />
 <meta name="author" content="" />
 <link rel="icon" href="favicon.ico" />
-
 <link rel="stylesheet" type="text/css"
 			href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
 		
-		<link rel="stylesheet" th:href="@{/css/main.css}"
-			href="../../css/main.css" />
-
-<title>Edit Movie </title>
+<title>Admin/Employee registration </title>
 
 <!-- Bootstrap core CSS -->
 <link
@@ -27,7 +24,6 @@
   integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
   crossorigin="anonymous" />
 
-	<link th:href="@{css/style.css}" rel="stylesheet" />
 </head>
 
 <body class="gray-bg">
@@ -37,66 +33,44 @@
       
       <hr />
 
-      <h4>Edit Movie</h4>
+      <h4>Add Room</h4>
 
-      <form autocomplete="off" action="#" th:action="@{'/admin/movie/edit/' + ${movie.movieId}}"
+      <form autocomplete="off" action="#" th:action="@{/admin/branch/room(id=${id})}"
         method="post" class="m-t" role="form"
         data-toggle="validator">
 
 		
-        <div th:if="${messageSuccess}" class="alert alert-success"
-          role="alert" th:text=${messageSuccess}></div>
-
-        <div th:if="${error}"
+        <div th:if="${success}" class="alert alert-success"
+          role="alert" th:text=${success}></div>
+          
+		<div th:if="${error}"
           class="alert alert-danger" role="alert"
           th:text="${error}"></div>
-
-       	 
-        <input type="hidden" th:field="${movie.movieId}"
-            placeholder="Movie name" class="form-control" />
+            
+        <div class="form-group input-group has-feedback">
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-user"></span>
+          </span>
           
+        <input type="text" th:field="${room.type}"
+            placeholder="Room Name" class="form-control" />
+          <span class="glyphicon form-control-feedback"
+            aria-hidden="true"></span>
         
-        <div class="form-group input-group has-feedback">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-save"></span>
-          </span>
-          <input type="text" th:field="${movie.movieName}"
-            placeholder="Movie name" class="form-control" />
+        
+        <input type="text" th:field="${room.price}"
+            placeholder="Room Price" class="form-control" />
+          <span class="glyphicon form-control-feedback"
+            aria-hidden="true"></span>
+            
+         <input type="text" th:field="${room.capacity}"
+            placeholder="Room Capacity" class="form-control" />
           <span class="glyphicon form-control-feedback"
             aria-hidden="true"></span>
         </div>
 
-		<div class="form-group input-group has-feedback">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-save"></span>
-          </span>
-          <input type="text" th:field="${movie.posterLink}"
-            placeholder="Poster link" class="form-control" />
           <span class="glyphicon form-control-feedback"
-            aria-hidden="true"></span>
-        </div>
-        
-        <div class="form-group input-group has-feedback">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-save"></span>
-          </span>
-          <input type="text" th:field="${movie.imdbLink}"
-            placeholder="IMDB Link" class="form-control" />
-          <span class="glyphicon form-control-feedback"
-            aria-hidden="true"></span>
-        </div>
-        
-        <div class="form-group input-group has-feedback">
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-save"></span>
-          </span>
-          <input type="date" th:field="${movie.releaseDate}"
-            placeholder="Release Date" class="form-control" />
-          <span class="glyphicon form-control-feedback"
-            aria-hidden="true"></span>
-        </div>
-        
-         
+            aria-hidden="true"></span> 
 
         <button type="submit"
           class="btn btn-primary block full-width m-b">Register</button>

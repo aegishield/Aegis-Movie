@@ -36,21 +36,21 @@ public class Movie {
 	@Column(name = "release_date",columnDefinition="DATE")
 	private Date releaseDate;
 	
-	@Transient
-	private String stringDate;
+	@Column(name = "status")
+	private boolean status;
 	
     public Movie() {
     	 
     }
     
-    public Movie(Long movieId, String movieName, String imdbLink, String posterLink,Date releaseDate,String stringDate) {
+    public Movie(Long movieId, String movieName, String imdbLink, String posterLink,Date releaseDate,String stringDate,boolean status) {
 		super();
 		this.movieId = movieId;
 		this.movieName = movieName;
 		this.imdbLink = imdbLink;
 		this.posterLink = posterLink;
 		this.releaseDate = releaseDate;
-		this.stringDate = stringDate;
+		this.status = status;
 	}
 
     
@@ -111,12 +111,13 @@ public class Movie {
 	}
 
 	
-	public String getStringDate() {
-		return stringDate;
+	
+	public boolean isStatus() {
+		return status;
 	}
 
-	public void setStringDate(String stringDate) {
-		this.stringDate = stringDate;
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 	@Override

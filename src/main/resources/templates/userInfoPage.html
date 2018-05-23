@@ -36,9 +36,8 @@
       <h2>User Info Page</h2>
       <h3>Welcome : <span th:utext="${user.userName}"></span></h3>
       <h3>Balance : Rp.<span th:utext="${user.balance}"></span></h3>
-      <script type="text/javascript"
-		src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-     
+      <h3><a th:href="@{/booking}">Book room</a></h3>
+      <h3><a th:href="@{/transaction}">My Transaction</a></h3>
      
    </body>
     

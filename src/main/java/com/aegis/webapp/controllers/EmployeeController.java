@@ -1,6 +1,7 @@
 package com.aegis.webapp.controllers;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,10 +14,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.aegis.webapp.entities.AppUser;
+import com.aegis.webapp.entities.Booking;
 import com.aegis.webapp.entities.Employee;
 import com.aegis.webapp.repository.AppUserRepository;
+import com.aegis.webapp.repository.BookingRepository;
 import com.aegis.webapp.repository.EmployeeRepository;
 import com.aegis.webapp.utils.WebUtils;
 
@@ -28,6 +32,9 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeRepository employeeRepository;
+	
+	@Autowired
+	private BookingRepository bookingRepository;
 	
 	@RequestMapping(value = "/employee", method = RequestMethod.GET)
 	public String employeePage(Model model, Principal principal) {
@@ -97,6 +104,38 @@ public class EmployeeController {
         return "setEmpProfilePage";
     }
 	
+	@RequestMapping(value = "employee/confirm", method = RequestMethod.GET)
+	public String showConfirmationPage(Model model,Booking booking,AppUser user) {
+        
+		model.addAttribute("user",user);
+		model.addAttribute("booking",booking);
+        return "confirmPage";
+    }
 	
+	@RequestMapping(value = "employee/confirm", method = RequestMethod.POST)
+	public String saveConfirmationPage(Model model,Booking booking,BindingResult bindingResultBooking,@ModelAttribute("user") AppUser user,BindingResult bindingResultUser) {
+        AppUser userExists = appUserRepository.findByUserName(user.getUserName());
+        if(userExists==null) {
+        	bindingResultUser.reject("userNotExists");
+        	model.addAttribute("error","User not found in database!");
+        	return "confirmPage";
+        } else {
+        	Booking bookExists = bookingRepository.findByBookingIdAndUserId(booking.getBookingId(),userExists.getUserId());
+        	if(bookExists == null) {
+        		bindingResultBooking.reject("bookingNotExists");
+            	model.addAttribute("error","Booking not found in database!");
+            	return "confirmPage";
+        	} else if(bookExists.isStatus() == true){
+        		bindingResultBooking.reject("bookingConfirmed");
+        		model.addAttribute("error","Booking already confirmed!");
+            	return "confirmPage";
+        	} else {
+        		bookExists.setStatus(true);
+        		bookingRepository.save(bookExists);
+        		model.addAttribute("success","Booking successfully confirmed!");
+        	}
+        }
+        return "confirmPage";
+    }
 	
 }

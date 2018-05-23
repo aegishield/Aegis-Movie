@@ -51,12 +51,13 @@ public class WebController {
     @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal) {
   
- 
+    	
         User loginedUser = (User) ((Authentication) principal).getPrincipal();
         
         String admin = WebUtils.isAdmin(loginedUser);
         model.addAttribute("admin", admin);
         AppUser myUser = appUserRepository.findByUserName(loginedUser.getUsername());
+        System.out.println(myUser.getDateCreated());
         model.addAttribute("user",myUser);
         return "userInfoPage";
     }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,14 +107,14 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(value="/confirm", method = RequestMethod.GET)
-	public ModelAndView confirmRegistration(ModelAndView modelAndView, @RequestParam("token") String token) {
+	public String confirmRegistration(Model model, @RequestParam("token") String token) {
 			
 		AppUser user = appUserRepository.findByConfirmationToken(token);
 			
 		if (user == null) { 
-			modelAndView.addObject("messageFailed", "Oops!  This is an invalid confirmation link.");
+			model.addAttribute("messageFailed", "Oops!  This is an invalid confirmation link.");
 		} else { 
-			modelAndView.addObject("messageSuccess", "Registration successfull!");
+			model.addAttribute("messageSuccess", "Registration successfull!");
 			Role role = new Role();
 			role.setUserId(user.getUserId());
 			role.setRoleId(roleRepository.findIdByRole("ROLE_USER"));
@@ -121,7 +122,6 @@ public class RegisterController {
 			user.setEnabled(true);
 			appUserRepository.save(user);
 		}
-		modelAndView.setViewName("confirm");
-		return modelAndView;		
+		return"confirm";		
 	}
 }

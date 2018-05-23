@@ -12,17 +12,14 @@
 </head>
 <body>
 <h1>Movie</h1>
-<h2> <a th:href = "@{/admin/movie/add}">ADD New Movie</a></h2>
-
     <ul>
     <th:block th:each="movie : ${movies}">
     	<li th:text="${movie.movieName}"></li>
 		<li><img th:src="@{${movie.posterLink}}" alt="My Image"></li>
 		<li><a th:href="@{${movie.imdbLink}}" target="_blank">Description</a></li>
 		<li th:text="${movie.releaseDate}"></li>
-		<li><a th:href="@{'movie/edit/' + ${movie.movieId}}">edit</a></li>
-		<li th:if="${movie.status == true}"><a th:href = "@{/admin/movie(id=${movie.movieId},status=false)}">disable</a></li>
-		<li th:if="${movie.status == false}"><a th:href="@{/admin/movie(id=${movie.movieId},status=true)}"  th:text = "enable"></a></li>
+		<li><a th:href="@{/booking(movie = ${movie.movieId})}">book</a></li>
+		<h1></h1>
     </ul>
    	</th:block>
 </body>
