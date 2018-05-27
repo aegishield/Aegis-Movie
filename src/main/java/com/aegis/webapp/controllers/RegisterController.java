@@ -78,15 +78,7 @@ public class RegisterController {
 				
 		if (bindingResult.hasErrors()) { 
 			modelAndView.setViewName("register");	
-		}else if(!user.getEncrytedPassuser);
-		
-	String appUrl = request.getScheme() + "://" + request.getServerName();
-	
-	SimpleMailMessage registrationEmail = new SimpleMailMessage();
-	registrationEmail.setTo(user.getEmail());
-	registrationEmail.setSubjectword().equals(user.getConfirmedPassword())) {
-			System.out.println(user.getConfirmedPassword());
-			System.out.println(user.getEncrytedPassword());
+		} else if(!user.getConfirmedPassword().equals(user.getEncrytedPassword())) { 
 			modelAndView.addObject("error", "Your password is not match");
 			modelAndView.setViewName("register");
 			bindingResult.reject("password");
