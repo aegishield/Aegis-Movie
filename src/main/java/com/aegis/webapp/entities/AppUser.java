@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -46,25 +47,33 @@ public class AppUser {
 	private Date dateCreated;
 	
 	
+	@Transient
+	private String confirmedPassword;
+	
     public AppUser() {
  
     }
     
-
-	public AppUser(Long userId, String userName, String encrytedPassword, String email, String confirmationToken,boolean enabled,Integer balance,Date datecreated, Date dateCreated) {
+	public AppUser(Long userId, @NotEmpty(message = "Provide user name") String userName, String encrytedPassword,
+			@Email(message = "Please provide a valid e-mail") @NotEmpty(message = "Please provide an e-mail") String email,
+			boolean enabled, String confirmationToken, Integer balance, Date dateCreated, String confirmedPassword) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
 		this.encrytedPassword = encrytedPassword;
 		this.email = email;
-		this.confirmationToken = confirmationToken;
 		this.enabled = enabled;
+		this.confirmationToken = confirmationToken;
 		this.balance = balance;
 		this.dateCreated = dateCreated;
+		this.confirmedPassword = confirmedPassword;
 	}
 
 
-	
+
+
+
+
 
 	public Long getUserId() {
 		return userId;
@@ -145,6 +154,14 @@ public class AppUser {
 		this.dateCreated = dateCreated;
 	}
 
+	
+	public String getConfirmedPassword() {
+		return confirmedPassword;
+	}
+
+	public void setConfirmedPassword(String confirmedPassword) {
+		this.confirmedPassword = confirmedPassword;
+	}
 
 	@Override
     public String toString() {

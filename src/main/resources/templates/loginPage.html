@@ -1,68 +1,78 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-	<head>
-	    <title>Login</title>
-	    <link rel="stylesheet" type="text/css"
-		href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-	
-		<link rel="stylesheet" th:href="@{/css/main.css}"
-		href="../../css/main.css" />
- 	</head>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.css">
+
+    <!-- Website CSS style -->
+    <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+    <link rel="stylesheet" href="/login.css" />
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- Website Font style -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+    <title>Admin</title>
+</head>
 
 <body>
 
-	<div>
-   		
-   <nav class="navbar navbar-inverse">
-		<div class="container">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Aegis Movie</a>
-			</div>
-			<div id="navbar" class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li><a th:href="@{/}">Home</a></li>
-					<li><a th:if="${#request.userPrincipal != null}" th:href="@{/userInfo}">User Info</a></li>
-					<li><a th:if="${admin == 'ADMIN'}"th:href="@{/admin}">Admin</a>
-					<li><a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-  
-</div>
+    <div class="container">
+        <div class="row main">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <h1 class="title">Aegis Movie</h1>
 
-<script type="text/javascript"
-		src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
- 
-	<h1>Login</h1>
- 
-	<div th:if="${#request.getParameter('error') == 'true'}"
-      	style="color:red;margin:10px 0px;">
-       	Login Failed!<br />
-       	Reason : Invalid user name and/or password
+                    <hr />
+                </div>
+            </div>
+
+            <div th:if="${#request.getParameter('error') == 'true'}" class="alert alert-danger" role="alert">
+                Login Failed!<br /> Reason : Invalid user name and/or password
+            </div>
+            <div class="main-login main-center">
+                <form class="form-horizontal" name='f' th:action="@{/j_spring_security_check}" method='POST'>
+
+                    <div class="form-group">
+                        <label for="username" class="cols-sm-2 control-label">Username</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                <input type="text" name="username" valie="" placeholder="User Name" class="form-control" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="cols-sm-2 control-label">Password</label>
+                        <div class="cols-sm-10">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                <input type='password' name='password' class="form-control" placeholder="Password" required/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block login-button">Login</button>
+                    </div>
+                    <div class="login-register">
+                        <a href="/register">Register</a>
+                    </div>
+                    <div class="login-register">
+                        <a href="/">Home</a>
+                    </div>
+            </div>
+            </form>
+        </div>
     </div>
-   
-    <h3>Enter user name and password:</h3>
-    <form name='f' th:action="@{/j_spring_security_check}" method='POST'>
-       <table>
-          <tr>
-             <td>User:</td>
-             <td><input type='text' name='username' value=''></td>
-          </tr>
-          <tr>
-             <td>Password:</td>
-             <td><input type='password' name='password' /></td>
-          </tr>
-          <tr>
-             <td><input name="submit" type="submit" value="submit" /></td>
-          </tr>
-       </table>
-    </form>
-    
-    <script type="text/javascript"
-src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-     
- </body>
-   
-</html>
+    </div>
+
+    <script type="text/javascript" src="assets/js/bootstrap.js"></script>
+</body>

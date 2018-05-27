@@ -64,7 +64,7 @@ public class RegisterController {
 		
 		AppUser userNameExists = appUserRepository.findByUserName(user.getUserName());
 		if (userNameExists != null) {
-			modelAndView.addObject("alreadyRegisteredMessage", "Oops!  There is already a user registered with the username provided.");
+			modelAndView.addObject("error", "Oops!  There is already a user registered with the username provided.");
 			modelAndView.setViewName("register");
 			AppUser userExists = appUserRepository.findByEmail(user.getEmail());
 			
@@ -77,7 +77,19 @@ public class RegisterController {
 		}
 				
 		if (bindingResult.hasErrors()) { 
-			modelAndView.setViewName("register");			
+			modelAndView.setViewName("register");	
+		}else if(!user.getEncrytedPassuser);
+		
+	String appUrl = request.getScheme() + "://" + request.getServerName();
+	
+	SimpleMailMessage registrationEmail = new SimpleMailMessage();
+	registrationEmail.setTo(user.getEmail());
+	registrationEmail.setSubjectword().equals(user.getConfirmedPassword())) {
+			System.out.println(user.getConfirmedPassword());
+			System.out.println(user.getEncrytedPassword());
+			modelAndView.addObject("error", "Your password is not match");
+			modelAndView.setViewName("register");
+			bindingResult.reject("password");
 		} else { 
 		
 	    user.setEnabled(false);
@@ -99,7 +111,7 @@ public class RegisterController {
 		
 		emailService.sendEmail(registrationEmail);
 		
-		modelAndView.addObject("confirmationMessage", "A confirmation e-mail has been sent to " + user.getEmail());
+		modelAndView.addObject("success", "A confirmation e-mail has been sent to " + user.getEmail());
 		modelAndView.setViewName("register");
 			
 	}

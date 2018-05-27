@@ -1,6 +1,7 @@
 package com.aegis.webapp.controllers;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.aegis.webapp.entities.AppUser;
+import com.aegis.webapp.entities.Movie;
 import com.aegis.webapp.repository.AppUserRepository;
+import com.aegis.webapp.repository.MovieRepository;
 import com.aegis.webapp.utils.WebUtils;
  
 @Controller
@@ -19,6 +22,9 @@ public class WebController {
 	
 	@Autowired
 	private AppUserRepository appUserRepository;
+	
+	@Autowired
+	private MovieRepository movieRepository;
 	
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model,Principal principal) {
@@ -29,6 +35,8 @@ public class WebController {
         model.addAttribute("admin", admin);
         model.addAttribute("employee",employee);
     	}
+    	List<Movie> movies = movieRepository.findTop4ByOrderByReleaseDateDesc();
+    	model.addAttribute("movies",movies);
         return "welcomePage";
     }
  

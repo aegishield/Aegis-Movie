@@ -13,5 +13,5 @@ public interface MovieRepository extends JpaRepository<Movie,Long>{
 	Movie findByMovieName(String movieName);
 	Movie findByMovieId(Long movieId);
 	List<Movie> findAllByStatus(boolean status);
-
+	List<Movie> findTop4ByOrderByReleaseDateDesc();
 }
