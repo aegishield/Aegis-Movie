@@ -64,6 +64,8 @@ public class WebController {
         
         String admin = WebUtils.isAdmin(loginedUser);
         model.addAttribute("admin", admin);
+        String employee = WebUtils.isEmployee(loginedUser);
+        model.addAttribute("employee",employee);
         AppUser myUser = appUserRepository.findByUserName(loginedUser.getUsername());
         System.out.println(myUser.getDateCreated());
         model.addAttribute("user",myUser);

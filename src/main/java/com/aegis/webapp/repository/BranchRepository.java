@@ -12,4 +12,5 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
 	Branch findByBranchId(Long branchId);
 	Branch findByAddress(String address);
 	List<Branch> findAllByStatus(boolean status);
+	List<Branch> findAllByOrderByBranchId();
 }

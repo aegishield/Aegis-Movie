@@ -1,32 +1,48 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" th:href="@{/css/main.css}" href="../../css/main.css" />
-
-    <title>Movie management screen</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/main.css" />
+    <title>Movie Management</title>
 </head>
 
 <body>
-    <h1>Movie</h1>
-    <h2> <a th:href="@{/admin/movie/add}">ADD New Movie</a></h2>
-
-    <ul>
-        <th:block th:each="movie : ${movies}">
-            <li th:text="${movie.movieName}"></li>
-            <li><img th:src="@{${movie.posterLink}}" alt="My Image"></li>
-            <li><a th:href="@{${movie.imdbLink}}" target="_blank">Description</a></li>
-            <li th:text="${movie.releaseDate}"></li>
-            <li><a th:href="@{'movie/edit/' + ${movie.movieId}}">edit</a></li>
-            <li th:if="${movie.status == true}"><a th:href="@{/admin/movie(id=${movie.movieId},status=false)}">disable</a></li>
-            <li th:if="${movie.status == false}">
-                <a th:href="@{/admin/movie(id=${movie.movieId},status=true)}" th:text="enable"></a>
-            </li>
-        </th:block>
-    </ul>
+    <div class="row mid">
+        <div class="col-md-12 popular-movie">
+            <h5 class="header"><a th:href="@{/admin/movie/add}" style="text-decoration: none;">Add New Movie</a></h5>
+            <div style="margin-top:30px">
+                <h4><a href="/admin">Back</a></h4>
+            </div>
+        </div>
+        <div class="grid-container">
+            <th:block th:each="movie : ${movies}">
+                <div class="grid-item">
+                    <img class="img-list" th:src="@{${movie.posterLink}}" alt="My Image">
+                    <div class="card-body" style="height: 13em;">
+                        <p class="card-text" th:text="${movie.movieName}"></p>
+                        <p><a th:href="@{${movie.imdbLink}}" target="_blank">Description</a></p>
+                        <p class="card-text"> Release Date :</p>
+                        <p class="card-text" th:text="${movie.releaseDate}"></p>
+                        <p><a th:href="@{'movie/edit/' + ${movie.movieId}}">Edit</a></p>
+                        <p th:if="${movie.status == true}">
+                            <a th:href="@{/admin/movie(id=${movie.movieId},status=false)}"> Disable</a>
+                        </p>
+                        <p th:if="${movie.status == false}">
+                            <a th:href="@{/admin/movie(id=${movie.movieId},status=true)}"> Enable</a>
+                        </p>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
 </body>
 
 </html>

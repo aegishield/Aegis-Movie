@@ -41,19 +41,19 @@
             <h4>Booking</h4>
 
 
-            <form autocomplete="off" action="#" th:action="@{/booking(movie=${movieId})}" method="post" class="m-t" role="form" data-toggle="validator">
+            <form autocomplete="off" th:action="@{/booking(movie=${movieId})}" method="post" class="m-t" role="form" data-toggle="validator">
 
 
-                <h4>Movie : </h4>
+                <h4 style="margin-top: 30px">Movie : </h4>
                 <span th:if="${movieId == null}"><a th:href="@{/booking/movie}">Select Movie</a></span>
                 <h4 th:if="${movieId != null}" th:text="${movie.movieName}"></h4>
-                <h4>Location :</h4>
+                <h4 style="margin-top: 30px">Location :</h4>
                 <span th:if="${movieId == null}">Please Select Movie First</span>
 
                 <th:block th:if="${movieId != null}">
                     <th:block th:if="${branchId == null}">
                         <select onchange="javascript:handleSelect(this)">
-                     <option value="">Select</option>
+                     <option value="" >Select</option>
                      <option th:each="b : ${branches}"
                         th:value="${b.branchId}"
                         th:text="${b.address}"> </option>
@@ -80,7 +80,7 @@
                         th:text="${r.type}"> </option>
         </select>
                 </th:block>
-                <h4> Select Date : </h4>
+                <h4 style="margin-top: 30px"> Select Date : </h4>
 
                 <div class="form-group input-group has-feedback">
                     <span class="input-group-addon">
@@ -92,7 +92,7 @@
 
 
 
-                <h4> Select Hour : </h4>
+                <h4 style="margin-top: 30px"> Select Hour : </h4>
                 <select th:field="${booking.hourId}">
                      <option value=""> -- </option>
                      <option th:each="h : ${hours}"
@@ -101,6 +101,9 @@
         </select>
                 <h1></h1>
                 <button type="submit" class="btn btn-primary block full-width m-b">Book</button>
+                <div class="row" style="margin-top: 30px">
+                    <a href="/">Home</a>
+                </div>
 
             </form>
             <p class="m-t">

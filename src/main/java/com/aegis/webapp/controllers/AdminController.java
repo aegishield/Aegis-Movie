@@ -42,12 +42,14 @@ public class AdminController {
 		public String adminPage(Model model, Principal principal) {
 	         
 	        User loginedUser = (User) ((Authentication) principal).getPrincipal();
-	 
+	        String employee = WebUtils.isEmployee(loginedUser);
 	        String admin = WebUtils.isAdmin(loginedUser);
 	        if(admin.equals("USER")) {
 	        	return "redirect:/";
 	        }
 	        model.addAttribute("admin", admin);
+	        model.addAttribute("employee",employee);
+
 	         
 	        return "adminPage";
 	    }

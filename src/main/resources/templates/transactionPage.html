@@ -1,50 +1,79 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>My Transaction</title>
-<script>
-function myFunction() {
-    var r =confirm("Are you sure you want to cancel your booking?");
-    if(r==true){
-    	return true;
-    }else {
-    	return false;
-    }
-}
-</script>
+    <title>My Transaction</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script>
+        function myFunction() {
+            var r = confirm("Are you sure you want to cancel your booking?");
+            if (r == true) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
 </head>
+
 <body>
-<div th:if="${error}"
-          class="alert alert-danger" role="alert"
-          th:text="${error}"></div>
-          
-          <div th:if="${success}"
-          class="alert alert-success" role="alert"
-          th:text="${success}"></div>
-	<ul>
-    <th:block th:each="b : ${books}" th:if="${transaction == null}">
-    	<li th:text="${b.bookingId}"></li>
-    	<li th:text="${b.bookingDate}"></li>
-    	<li th:if="${b.status == false}">Not yet confirmed</li>
-    	<li th:if="${b.status == true}">Confirmed</li>
-    	<li> <a th:href="@{/transaction(booking = ${b.bookingId})}">Booking Detail</a></li>
-    	<li> <a th:href="@{/transaction(transaction = ${b.bookingId})}" onclick="return myFunction()">Cancel booking</a></li>
-		<h1></h1>
-   	</th:block>
-   	</ul>
-   	
-   	<ul>
-    <th:block th:if="${detail != null}">
-    	<li th:text="${branch.address}"></li>
-    	<li th:text="${room.type}"></li>
-    	<li th:text="${movie.movieName}"></li>
-    	<li th:text="${room.price}"></li>
-    	<li><a href = "/transaction">Back</a></li>
-		<h1></h1>
-   	</th:block>
-   	</ul>
-   	
+    <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+
+    <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
+    <h1 class="text-center">My Transaction</h1>
+    <table class="table" style="margin-top: 60px;" th:if="${messagge == null}">
+        <thead>
+            <tr>
+                <th scope="col">Book Id</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Detail</th>
+                <th></th>
+            </tr>
+            <tbody>
+                <th:block th:each="b : ${books}" th:if="${transaction == null}">
+                    <tr>
+                        <th scope="row" th:text="${b.bookingId}"></th>
+                        <td th:text="${b.bookingDate}"></td>
+                        <td th:if="${b.status == false}">Not Yet Confirmed</td>
+                        <td th:if="${b.status == true}">Confirmed</td>
+                        <td><a th:href="@{/transaction(booking = ${b.bookingId})}">Booking Detail</a></td>
+                        <td><a th:href="@{/transaction(transaction = ${b.bookingId})}" onclick="return myFunction()">Cancel booking</a></td>
+                    </tr>
+                </th:block>
+            </tbody>
+        </thead>
+    </table>
+
+    <table class="table" style="margin-top: 60px;" th:if="${detail != null}">
+        <h3 class="text-center" style="margin-top: 20px">Transaction Detail</h1>
+            <thead>
+                <tr>
+                    <th scope="col">Cinema Location</th>
+                    <th scope="col">Room</th>
+                    <th scope="col">Movie Name</th>
+                    <th scope="col">Price</th>
+                    <th></th>
+                </tr>
+                <tbody>
+                    <tr>
+                        <td th:text="${branch.address}"></td>
+                        <td th:text="${room.type}"></td>
+                        <td th:text="${movie.movieName}"></td>
+                        <td th:text="${room.price}"></td>
+                        <td><a href="/transaction">Back</a></td>
+                </tbody>
+            </thead>
+    </table>
+    <h4 th:if="${messagge != null}" th:text="${messagge}" class="text-center" style="margin-top: 20px;margin-bottom: 20px;"></h4>
+    <h4 class="text-center"><a class="text-center" href="/userInfo">Home</a></h4>
+
 </body>
+
 </html>

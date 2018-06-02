@@ -10,8 +10,9 @@ import com.aegis.webapp.entities.Room;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long>{
 	List<Room> findAllByBranchIdAndStatus(Long branchId,boolean status);
-	List<Room> findAllByBranchId(Long branchId);
+	List<Room> findAllByBranchIdOrderByRoomId(Long branchId);
 	Room findByRoomId(Long roomId);
 	Room findByTypeAndBranchId(String type,Long branchId);
 	List<Room> findAllByStatus(boolean status);
+	List<Room> findAllByOrderByRoomId();
 }

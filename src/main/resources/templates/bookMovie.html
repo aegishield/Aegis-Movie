@@ -1,26 +1,45 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css"
-			href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-		
-		<link rel="stylesheet" th:href="@{/css/main.css}"
-			href="../../css/main.css" />
-			
-			<title>Movie management screen</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/main.css" />
+    <title>Select Movie</title>
 </head>
+
 <body>
-<h1>Movie</h1>
-    <ul>
-    <th:block th:each="movie : ${movies}">
-    	<li th:text="${movie.movieName}"></li>
-		<li><img th:src="@{${movie.posterLink}}" alt="My Image"></li>
-		<li><a th:href="@{${movie.imdbLink}}" target="_blank">Description</a></li>
-		<li th:text="${movie.releaseDate}"></li>
-		<li><a th:href="@{/booking(movie = ${movie.movieId})}">book</a></li>
-		<h1></h1>
-    </ul>
-   	</th:block>
+    <div class="row mid">
+        <div class="col-md-12 popular-movie">
+            <span class="header">Select Movie</span>
+        </div>
+        <div class="grid-container">
+            <th:block th:each="movie : ${movies}">
+                <div class="grid-item">
+                    <img class="img-list" th:src="@{${movie.posterLink}}" alt="My Image">
+                    <div class="card-body">
+                        <p class="card-text" th:text="${movie.movieName}"></p>
+                        <p><a th:href="@{/booking(movie = ${movie.movieId})}">Book</a></p>
+                        <p><a th:href="@{${movie.imdbLink}}" target="_blank">Description</a></p>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+    <!-- <ul>
+        <th:block th:each="movie : ${movies}">
+            <li th:text="${movie.movieName}"></li>
+            <li><img th:src="@{${movie.posterLink}}" alt="My Image"></li>
+            <li><a th:href="@{${movie.imdbLink}}" target="_blank">Description</a></li>
+            <li th:text="${movie.releaseDate}"></li>
+            <li><a th:href="@{/booking(movie = ${movie.movieId})}">book</a></li>
+            <h1></h1>
+    </ul> -->
+    </th:block>
 </body>
+
 </html>

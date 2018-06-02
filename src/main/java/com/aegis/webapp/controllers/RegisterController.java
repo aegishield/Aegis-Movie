@@ -58,10 +58,7 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ModelAndView processRegistrationForm(ModelAndView modelAndView,@Valid @ModelAttribute("user") AppUser user, BindingResult bindingResult, HttpServletRequest request) {
-				
-		
-		
+	public ModelAndView processRegistrationForm(ModelAndView modelAndView,@Valid @ModelAttribute("user") AppUser user, BindingResult bindingResult, HttpServletRequest request) {		
 		AppUser userNameExists = appUserRepository.findByUserName(user.getUserName());
 		if (userNameExists != null) {
 			modelAndView.addObject("error", "Oops!  There is already a user registered with the username provided.");

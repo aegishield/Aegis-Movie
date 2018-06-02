@@ -3,6 +3,7 @@ package com.aegis.webapp.controllers;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,6 +28,8 @@ import com.aegis.webapp.repository.BranchRepository;
 import com.aegis.webapp.repository.HourRepository;
 import com.aegis.webapp.repository.MovieRepository;
 import com.aegis.webapp.repository.RoomRepository;
+
+import ch.qos.logback.core.util.Duration;
 
 @Controller
 public class BookingController {
@@ -56,8 +59,12 @@ public class BookingController {
         model.addAttribute("detail",detailId);
         model.addAttribute("transaction",bookingId);
         if(detailId == null) {
-        	List<Booking> books = bookingRepository.findAllByUserId(user.getUserId());
-        	model.addAttribute("books",books);
+        	List<Booking> books = bookingRepository.findAllByUserIdOrderByBookingId(user.getUserId());
+        	if(books.isEmpty()) {
+        		model.addAttribute("messagge","There is currently no transaction :(");
+        	} else {
+        		model.addAttribute("books",books);
+        	}
         }
         
         if(bookingId != null) {
@@ -118,36 +125,48 @@ public class BookingController {
 	
 	@RequestMapping(value = "/booking", method = RequestMethod.POST)
 	public String saveBooking(Model model,Principal principal,Booking booking,BindingResult bindingResult,@RequestParam(value = "movie",required = false) Long movieId,RedirectAttributes redirectAttrs){
-		User loginedUser = (User) ((Authentication) principal).getPrincipal();
-        AppUser user = appUserRepository.findByUserName(loginedUser.getUsername());
-        Booking bookingExists = bookingRepository.findByBookingDateAndHourIdAndRoomId(booking.getBookingDate(), booking.getHourId(), booking.getRoomId());
-        
-        if(bookingExists == null) {
-        	
-        	Room bookingRoom = roomRepository.findByRoomId(booking.getRoomId());
-        	Integer myBalance = user.getBalance();
-        	Integer bookingPrice = bookingRoom.getPrice();
-        	
-        	if(myBalance < bookingPrice) {
-        		bindingResult.reject("balanceNotEnough");
-        		model.addAttribute("error","Balance insufficient! Please add your balance in our Aegis Movie outlet!");
-        		return "bookingPage";
-        	}
-        	
-        	Date now = new Date();
-        	booking.setTransactionDate(now);
-        	booking.setUserId(user.getUserId());
-        	booking.setMovieId(movieId);
-        	booking.setStatus(false);
-        	user.setBalance(user.getBalance() - bookingPrice);
-        	appUserRepository.save(user);
-        	bookingRepository.save(booking);
-            redirectAttrs.addFlashAttribute("success","Your booking is successfully saved with booking id : " + booking.getBookingId() + "  Please confirm your booking in our Aegis Movie outlet!");
-        } else {
-        	bindingResult.reject("bookingExists");
-        	model.addAttribute("error","Booking already exists! Please check booking schedule for empty schedule!");
-        	return "bookingPage";
-        }
+		if(booking.getHourId() == null || booking.getBookingDate() == null || booking.getMovieId() == null || booking.getRoomId() == null) {
+			model.addAttribute("error","Please complete the form");
+			bindingResult.reject("invalid");
+			return "bookingPage";
+		} else {
+			User loginedUser = (User) ((Authentication) principal).getPrincipal();
+	        AppUser user = appUserRepository.findByUserName(loginedUser.getUsername());
+	        Booking bookingExists = bookingRepository.findByBookingDateAndHourIdAndRoomId(booking.getBookingDate(), booking.getHourId(), booking.getRoomId());
+	        
+	        if(bookingExists == null) {
+	        	
+	        	Room bookingRoom = roomRepository.findByRoomId(booking.getRoomId());
+	        	Integer myBalance = user.getBalance();
+	        	Integer bookingPrice = bookingRoom.getPrice();
+	        	
+	        	if(myBalance < bookingPrice) {
+	        		bindingResult.reject("balanceNotEnough");
+	        		model.addAttribute("error","Balance insufficient! Please add your balance in our Aegis Movie outlet!");
+	        		return "bookingPage";
+	        	}
+	        	Date now = new Date();
+	            long diff = now.getTime() - booking.getBookingDate().getTime();
+	            long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+	        	if(booking.getBookingDate().compareTo(now) < 0 || days > -2) {
+	        		bindingResult.reject("invalidDate");
+	        		model.addAttribute("error","Booking date must be 3 days from now");
+	        		return "bookingPage";
+	        	}
+	        	booking.setTransactionDate(now);	
+	        	booking.setUserId(user.getUserId());
+	        	booking.setMovieId(movieId);
+	        	booking.setStatus(false);
+	        	user.setBalance(user.getBalance() - bookingPrice);
+	        	appUserRepository.save(user);
+	        	bookingRepository.save(booking);
+	            redirectAttrs.addFlashAttribute("success","Your booking is successfully saved with booking id : " + booking.getBookingId() + "  Please confirm your booking in our Aegis Movie outlet!");
+	        } else {
+	        	bindingResult.reject("bookingExists");
+	        	model.addAttribute("error","Booking already exists! Please select another");
+	        	return "bookingPage";
+	        }
+		}
         return "redirect:/transaction";
     }
 	

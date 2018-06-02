@@ -46,8 +46,10 @@ public class EmployeeController {
         	return "redirect:/employee/setProfile";
         }
         String employee = WebUtils.isEmployee(loginedUser);
+        String admin = WebUtils.isAdmin(loginedUser);
+        model.addAttribute("admin", admin);
         model.addAttribute("employee", employee);
-         
+
         return "employeePage";
     }
 	

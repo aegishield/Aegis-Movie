@@ -28,11 +28,11 @@ public class BranchController {
 	public String branchPage(Model model,@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "true",required = false) Long branchId) {
         model.addAttribute("id",id);
 		if(id == null) {
-			List<Branch> branches = branchRepository.findAll();
+			List<Branch> branches = branchRepository.findAllByOrderByBranchId();
 			model.addAttribute("branches",branches);
 		} else {
 			Branch branches = branchRepository.findByBranchId(id);
-			List<Room> rooms = roomRepository.findAllByBranchId(branches.getBranchId());
+			List<Room> rooms = roomRepository.findAllByBranchIdOrderByRoomId(branches.getBranchId());
 			model.addAttribute("branches",branches);
 			model.addAttribute("rooms",rooms);
 		}
@@ -66,10 +66,16 @@ public class BranchController {
     }
 	
 	@RequestMapping(value = "/admin/branch/room", method = RequestMethod.GET)
-	public String addRoomPage(Model model,Branch branch,Room room,@RequestParam(value = "id",required = false) Long id) {
+	public String addRoomPage(Model model,Branch branch,Room room,@RequestParam(value = "id",required = false) Long id,@RequestParam(value = "true",required = false) Long branchId) {
 		model.addAttribute("id",id);
 		model.addAttribute("room",room);
 		model.addAttribute("branch",branch);
+		if(branchId != null) {
+			Room roomEdit = roomRepository.findByRoomId(branchId);
+			roomEdit.setStatus(!roomEdit.isStatus());
+			roomRepository.save(roomEdit);
+			return "redirect:/admin/branch";
+		}
         return "addRoomPage";
     }
 	

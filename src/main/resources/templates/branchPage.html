@@ -1,41 +1,74 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" type="text/css"
-			href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
-		
-		<link rel="stylesheet" th:href="@{/css/main.css}"
-			href="../../css/main.css" />
-			
-			<title>Movie management screen</title>
-</head>
-<body>
-<h1>Branch</h1>
-<h2> <a th:href = "@{/admin/branch/add}">ADD New Branch</a></h2>
 
-    <ul>
-    <th:block th:each="branch : ${branches}">
-    	<li th:text="${branch.branchId}"></li>
-		<li th:text="${branch.address}"></li>
-		<li th:text="${branch.status}"></li>
-		<li th:if="${branch.status == true}"><a th:href="@{/admin/branch(true=${branch.branchId})}">Disable</a></li>
-		<li th:if="${branch.status == false}"><a th:href="@{/admin/branch(true=${branch.branchId})}">Enable</a></li>
-		<li><a th:href="@{/admin/branch(id=${branch.branchId})}" th:text = "Detail" ></a></li>
-    </ul>
-   	</th:block>
-   	
-   	<th:block th:if = "${rooms != null}">
-   	<h1>Room Detail :</h1>
-   	<a th:href="@{/admin/branch/room(id=${id})}">Add new Room</a>
-   	<ul>
-    <th:block th:if = "${rooms}" th:each="room : ${rooms}">
-    	<li th:text="${room.roomId}"></li>
-		<li th:text="${room.capacity}"></li>
-		<li th:text="${room.type}"></li>
-		<h1></h1>
-    </ul>
-   	</th:block>
-   	
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Branch management screen</title>
+</head>
+
+<body>
+    <h1>Branch</h1>
+    <h2> <a th:href="@{/admin/branch/add}">Add New Branch</a></h2>
+    <h2> <a th:href="@{/admin}">Home</a></h2>
+    <table class="table" style="margin-top: 60px;" th:if="${messagge == null}">
+        <thead>
+            <tr>
+                <th scope="col">Branch Id</th>
+                <th scope="col">Location</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            <tbody>
+                <th:block th:each="branch : ${branches}">
+                    <tr>
+                        <th scope="row" th:text="${branch.branchId}"></th>
+                        <td th:text="${branch.address}"></td>
+                        <td th:text="${branch.status}">Not Yet Confirmed</td>
+                        <td th:if="${branch.status == true}"><a th:href="@{/admin/branch(true=${branch.branchId})}">Disable</a></td>
+                        <td th:if="${branch.status == false}"><a th:href="@{/admin/branch(true=${branch.branchId})}">Enable</a></td>
+                        <td>
+                            <a th:href="@{/admin/branch(id=${branch.branchId})}">Room Detail</a>
+                        </td>
+                    </tr>
+                </th:block>
+        </thead>
+    </table>
+
+    <th:block th:if="${rooms != null}">
+        <table class="table" style="margin-top: 60px;" th:if="${rooms != null}">
+            <h1 style="margin-top: 60px;">Room Detail :</h1>
+            <thead>
+                <tr>
+                    <th scope="col">Room Id</th>
+                    <th scope="col">Capacity</th>
+                    <th scope="col">Room Name</th>
+                    <th scope="col">Status</th>
+                    <th></th>
+                </tr>
+                <tbody>
+
+                    <th:block th:each="room : ${rooms}">
+                        <tr>
+                            <th scope="row" th:text="${room.roomId}"></th>
+                            <td th:text="${room.capacity}"></td>
+                            <td th:text="${room.type}"></td>
+                            <td th:text="${room.status}"></td>
+                            <td th:if="${room.status == true}"><a th:href="@{/admin/branch/room(true=${room.roomId})}">Disable</a></td>
+                            <td th:if="${room.status == false}"><a th:href="@{/admin/branch/room(true=${room.roomId})}">Enable</a></td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </thead>
+        </table>
+        <h2><a th:href="@{/admin/branch/room(id=${id})}" style="margin-top:20px">Add new Room</a></h2>
+        <h4><a href="/admin/branch">Back</a></h4>
+    </th:block>
 </body>
+
 </html>
