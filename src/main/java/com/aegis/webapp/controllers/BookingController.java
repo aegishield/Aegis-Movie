@@ -143,9 +143,9 @@ public class BookingController {
 	        	Date now = new Date();
 	            long diff = now.getTime() - booking.getBookingDate().getTime();
 	            long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-	        	if(booking.getBookingDate().compareTo(now) < 0 || days > -2) {
+	        	if(booking.getBookingDate().compareTo(now) < 0 || days > 1) {
 	        		bindingResult.reject("invalidDate");
-	        		model.addAttribute("error","Booking date must be 3 days from now");
+	        		model.addAttribute("error","Booking date must be 1 days from now");
 	        		return "bookingPage";
 	        	} 
 		        	booking.setTransactionDate(now);	
