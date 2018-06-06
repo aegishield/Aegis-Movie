@@ -58,21 +58,19 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public ModelAndView processRegistrationForm(ModelAndView modelAndView,@Valid @ModelAttribute("user") AppUser user, BindingResult bindingResult, HttpServletRequest request) {		
+	public ModelAndView processRegistrationForm(ModelAndView modelAndView,@ModelAttribute("user") AppUser user, BindingResult bindingResult, HttpServletRequest request) {		
 		AppUser userNameExists = appUserRepository.findByUserName(user.getUserName());
+		AppUser emailExists = appUserRepository.findByEmail(user.getEmail());
 		if (userNameExists != null) {
 			modelAndView.addObject("error", "Oops!  There is already a user registered with the username provided.");
 			modelAndView.setViewName("register");
-			AppUser userExists = appUserRepository.findByEmail(user.getEmail());
-			
-			if(userExists != null) {
-				modelAndView.addObject("alreadyRegisteredMessage", "Oops!  There is already a user registered with the email provided.");
-				modelAndView.setViewName("register");
-				bindingResult.reject("email");
-			}
 			bindingResult.reject("userName");
 		}
-				
+		if(emailExists != null) {
+				modelAndView.addObject("error", "Oops!  There is already a user registered with the email provided.");
+				modelAndView.setViewName("register");
+				bindingResult.reject("email");
+		}
 		if (bindingResult.hasErrors()) { 
 			modelAndView.setViewName("register");	
 		} else if(!user.getConfirmedPassword().equals(user.getEncrytedPassword())) { 

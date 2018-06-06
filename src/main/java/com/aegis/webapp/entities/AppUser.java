@@ -24,14 +24,11 @@ public class AppUser {
 	private Long userId;
 	
 	@Column(name = "user_name")
-	@NotEmpty(message = "Provide user name")
     private String userName;
 	
     private String encrytedPassword;
     
-    @Column(name = "email", nullable = false, unique = true)
-	@Email(message = "Please provide a valid e-mail")
-	@NotEmpty(message = "Please provide an e-mail")
+    @Column(name = "email")
     private String email;
     
     @Column(name = "enabled")
@@ -54,8 +51,8 @@ public class AppUser {
  
     }
     
-	public AppUser(Long userId, @NotEmpty(message = "Provide user name") String userName, String encrytedPassword,
-			@Email(message = "Please provide a valid e-mail") @NotEmpty(message = "Please provide an e-mail") String email,
+	public AppUser(Long userId, String userName, String encrytedPassword,
+			 String email,
 			boolean enabled, String confirmationToken, Integer balance, Date dateCreated, String confirmedPassword) {
 		super();
 		this.userId = userId;
