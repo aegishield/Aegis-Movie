@@ -76,7 +76,7 @@ public class BookingController {
 	        	} else {
 	        		bookingRepository.delete(book);
 	        		Room room = roomRepository.findByRoomId(book.getRoomId());
-	        		Integer conpensation = room.getPrice() * 8 / 100;
+	        		Integer conpensation = room.getPrice() * 80/100;
 	        		user.setBalance(user.getBalance() + conpensation);
 	        		appUserRepository.save(user);
 	                redirectAttrs.addFlashAttribute("success","Your booking is successfully deleted with booking id : " + book.getBookingId());
@@ -125,17 +125,12 @@ public class BookingController {
 	
 	@RequestMapping(value = "/booking", method = RequestMethod.POST)
 	public String saveBooking(Model model,Principal principal,Booking booking,BindingResult bindingResult,@RequestParam(value = "movie",required = false) Long movieId,RedirectAttributes redirectAttrs){
-		if(booking.getHourId() == null || booking.getBookingDate() == null || booking.getMovieId() == null || booking.getRoomId() == null) {
-			model.addAttribute("error","Please complete the form");
-			bindingResult.reject("invalid");
-			return "bookingPage";
-		} else {
 			User loginedUser = (User) ((Authentication) principal).getPrincipal();
 	        AppUser user = appUserRepository.findByUserName(loginedUser.getUsername());
 	        Booking bookingExists = bookingRepository.findByBookingDateAndHourIdAndRoomId(booking.getBookingDate(), booking.getHourId(), booking.getRoomId());
 	        
 	        if(bookingExists == null) {
-	        	
+	        	try {
 	        	Room bookingRoom = roomRepository.findByRoomId(booking.getRoomId());
 	        	Integer myBalance = user.getBalance();
 	        	Integer bookingPrice = bookingRoom.getPrice();
@@ -152,22 +147,24 @@ public class BookingController {
 	        		bindingResult.reject("invalidDate");
 	        		model.addAttribute("error","Booking date must be 3 days from now");
 	        		return "bookingPage";
-	        	}
-	        	booking.setTransactionDate(now);	
-	        	booking.setUserId(user.getUserId());
-	        	booking.setMovieId(movieId);
-	        	booking.setStatus(false);
-	        	user.setBalance(user.getBalance() - bookingPrice);
+	        	} 
+		        	booking.setTransactionDate(now);	
+		        	booking.setUserId(user.getUserId());
+		        	booking.setMovieId(movieId);
+		        	booking.setStatus(false);
+		        	user.setBalance(user.getBalance() - bookingPrice);
+	        	} catch (Exception e) {
+	        		model.addAttribute("error","Please complete the form");
+	    			bindingResult.reject("invalid");
+	    			return "bookingPage";	
+				}
 	        	appUserRepository.save(user);
 	        	bookingRepository.save(booking);
 	            redirectAttrs.addFlashAttribute("success","Your booking is successfully saved with booking id : " + booking.getBookingId() + "  Please confirm your booking in our Aegis Movie outlet!");
-	        } else {
-	        	bindingResult.reject("bookingExists");
-	        	model.addAttribute("error","Booking already exists! Please select another");
-	        	return "bookingPage";
+	            return "redirect:/transaction";
 	        }
-		}
-        return "redirect:/transaction";
+			return "bookingPage";	
+
     }
 	
 	@RequestMapping(value = "/booking/movie", method = RequestMethod.GET)

@@ -44,7 +44,7 @@
                         <td th:if="${b.status == false}">Not Yet Confirmed</td>
                         <td th:if="${b.status == true}">Confirmed</td>
                         <td><a th:href="@{/transaction(booking = ${b.bookingId})}">Booking Detail</a></td>
-                        <td><a th:href="@{/transaction(transaction = ${b.bookingId})}" onclick="return myFunction()">Cancel booking</a></td>
+                        <td><a th:if="${b.status == false}" th:href="@{/transaction(transaction = ${b.bookingId})}" onclick="return myFunction()">Cancel booking</a></td>
                     </tr>
                 </th:block>
             </tbody>
